@@ -1,24 +1,37 @@
 "use client";
 
+import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
+import { login, loginT } from "./actions";
 
 export default function LoginForm() {
+  const [state, loginAction] = useActionState(login, undefined);
+
   return (
-    <form className="flex max-w-[300px] flex-col gap-2">
-      <div className="flex flex-col gap-3">
-        <input id="name" name="name" placeholder="Name" />
-      </div>
+    <form action={loginAction} className="flex max-w-[300px] flex-col gap-2">
       <div className="flex flex-col gap-2">
-        <input id="email" name="email" placeholder="Email" />
+        <input
+          id="email"
+          name="email"
+          placeholder="Email"
+          className="border-2 border-slate-400 rounded-md"
+        />
       </div>
+      {state?.errors?.email && (
+        <p className="text-red-800">{state.errors.email}</p>
+      )}
       <div className="flex flex-col gap-2">
         <input
           id="password"
           name="password"
           type="password"
           placeholder="Password"
+          className="border-2 border-slate-400 rounded-md"
         />
       </div>
+      {state?.errors?.password && (
+        <p className="text-red-800">{state.errors.password}</p>
+      )}
       <SubmitButton />
     </form>
   );
@@ -26,5 +39,9 @@ export default function LoginForm() {
 
 function SubmitButton() {
   const { pending } = useFormStatus();
-  return <button>Login</button>;
+  return (
+    <button disabled={pending} type="submit">
+      Login
+    </button>
+  );
 }

@@ -13,4 +13,6 @@ The code in this repository is based on:
 ```bash
 npx create-next-app@latest
 cd nextjs-auth-ex11
+npm i jose
+npm i zod
 ```
